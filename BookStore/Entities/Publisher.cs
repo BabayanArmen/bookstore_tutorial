@@ -2,7 +2,7 @@
 {
     public class Publisher : BaseEntity
     {
-        public string Name { get; set; }
-        public ICollection<AuthorPublisher>? AuthorPiblishers { get; set; } = new List<AuthorPublisher>();
+        public string Name { get; set; } = string.Empty;
+        public ICollection<AuthorPublisher> AuthorPublishers { get; set; } = new List<AuthorPublisher>();
     }
 }

@@ -14,7 +14,7 @@ namespace BookStore.Data.Configutations
                 .IsRequired()
                 .HasMaxLength(128);
 
-            builder.HasMany(p => p.AuthorPiblishers)
+            builder.HasMany(p => p.AuthorPublishers)
                 .WithOne(ap => ap.Publisher)
                 .HasForeignKey(ap => ap.PublisherId)
                 .OnDelete(DeleteBehavior.Cascade);
