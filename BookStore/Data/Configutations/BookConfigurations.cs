@@ -18,7 +18,7 @@ namespace BookStore.Data.Configutations
                 .WithMany(a => a.Books)
                 .HasForeignKey(b => b.AuthorId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

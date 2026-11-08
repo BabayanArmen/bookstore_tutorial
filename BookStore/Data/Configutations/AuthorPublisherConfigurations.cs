@@ -8,19 +8,21 @@ namespace BookStore.Data.Configutations
     {
         public void Configure(EntityTypeBuilder<AuthorPublisher> builder)
         {
-            builder.HasKey(ap => new { ap.AuthorId, ap.PublisherId });
+            builder.HasKey(x => x.Id);
+
+            builder.HasIndex(ap => new { ap.AuthorId, ap.PublisherId }).IsUnique();
 
             builder.HasOne(ap => ap.Author)
                 .WithMany(a => a.AuthorPublishers)
                 .HasForeignKey(ap => ap.AuthorId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(ap => ap.Publisher)
-                .WithMany(p => p.AuthorPiblishers)
+                .WithMany(p => p.AuthorPublishers)
                 .HasForeignKey(ap => ap.PublisherId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

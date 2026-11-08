@@ -18,12 +18,13 @@ namespace BookStore.Data.Configutations
                 .WithOne(b => b.Author)
                 .HasForeignKey(b => b.AuthorId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             builder.HasMany(a => a.AuthorPublishers)
                 .WithOne(ap => ap.Author)
                 .HasForeignKey(ap => ap.AuthorId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

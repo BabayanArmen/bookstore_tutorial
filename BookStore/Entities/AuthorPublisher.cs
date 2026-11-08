@@ -1,6 +1,6 @@
 ﻿namespace BookStore.Entities
 {
-    public class AuthorPublisher
+    public class AuthorPublisher : BaseEntity
     {
         public int AuthorId { get; set; }
         public Author Author { get; set; } = null!;

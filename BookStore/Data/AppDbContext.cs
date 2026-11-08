@@ -8,7 +8,7 @@ namespace BookStore.Data
     {
         public DbSet<Book> Books => Set<Book>();
         public DbSet<Author> Authors => Set<Author>();
-        public DbSet<Publisher> Publisher => Set<Publisher>();
+        public DbSet<Publisher> Publishers => Set<Publisher>();
         public DbSet<AuthorPublisher> AuthorPublishers => Set<AuthorPublisher>();
 
         // This method automaticly sets CreateDate, ModifyDate, IsDeleted default values
@@ -23,7 +23,7 @@ namespace BookStore.Data
                 if (entry.State == EntityState.Added)
                 {
                     entry.Entity.CreateDate = now;
-                    entry.Entity.ModifyDate = now;
+                    entry.Entity.ModifyDate = null;
                     entry.Entity.IsDeleted = false;
                 }
                 else if (entry.State == EntityState.Modified)
@@ -47,6 +47,8 @@ namespace BookStore.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {
                 if (!typeof(BaseEntity).IsAssignableFrom(entityType.ClrType))
@@ -66,7 +68,6 @@ namespace BookStore.Data
                     .HasQueryFilter(lambda);
             }
 
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
         }
     }
 }

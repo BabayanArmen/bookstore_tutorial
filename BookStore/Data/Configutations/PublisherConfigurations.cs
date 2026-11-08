@@ -17,7 +17,7 @@ namespace BookStore.Data.Configutations
             builder.HasMany(p => p.AuthorPublishers)
                 .WithOne(ap => ap.Publisher)
                 .HasForeignKey(ap => ap.PublisherId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
