@@ -3,6 +3,6 @@
     public class UpdatePublisherDto
     {
         public string Title { get; set; } = string.Empty;
-        public List<int>? AuthorIds { get; set; } = new();
+        public List<int>? AuthorIds { get; set; }
     }
 }
