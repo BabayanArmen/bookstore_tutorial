@@ -17,7 +17,7 @@ namespace BookStore.Data.Configutations
             builder.HasOne(b => b.Author)
                 .WithMany(a => a.Books)
                 .HasForeignKey(b => b.AuthorId)
-                .IsRequired()
+                .IsRequired(false)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

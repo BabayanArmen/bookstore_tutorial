@@ -51,15 +51,33 @@ namespace BookStore.Migrations
 
             modelBuilder.Entity("BookStore.Entities.AuthorPublisher", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<int>("AuthorId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("ModifyDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("PublisherId")
                         .HasColumnType("integer");
 
-                    b.HasKey("AuthorId", "PublisherId");
+                    b.HasKey("Id");
 
                     b.HasIndex("PublisherId");
+
+                    b.HasIndex("AuthorId", "PublisherId")
+                        .IsUnique();
 
                     b.ToTable("AuthorPublishers");
                 });
@@ -72,7 +90,7 @@ namespace BookStore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AuthorId")
+                    b.Property<int?>("AuthorId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreateDate")
@@ -120,7 +138,7 @@ namespace BookStore.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Publisher");
+                    b.ToTable("Publishers");
                 });
 
             modelBuilder.Entity("BookStore.Entities.AuthorPublisher", b =>
@@ -128,13 +146,13 @@ namespace BookStore.Migrations
                     b.HasOne("BookStore.Entities.Author", "Author")
                         .WithMany("AuthorPublishers")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("BookStore.Entities.Publisher", "Publisher")
-                        .WithMany("AuthorPiblishers")
+                        .WithMany("AuthorPublishers")
                         .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Author");
@@ -147,8 +165,7 @@ namespace BookStore.Migrations
                     b.HasOne("BookStore.Entities.Author", "Author")
                         .WithMany("Books")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("Author");
                 });
@@ -162,7 +179,7 @@ namespace BookStore.Migrations
 
             modelBuilder.Entity("BookStore.Entities.Publisher", b =>
                 {
-                    b.Navigation("AuthorPiblishers");
+                    b.Navigation("AuthorPublishers");
                 });
 #pragma warning restore 612, 618
         }
