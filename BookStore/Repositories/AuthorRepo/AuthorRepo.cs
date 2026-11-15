@@ -6,9 +6,10 @@ namespace BookStore.Repositories.AuthorRepo
 {
     public class AuthorRepo(AppDbContext _db) : IAuthorRepo
     {
-        public Task AddASync(Author author)
+        public async Task AddASync(Author author)
         {
-            throw new NotImplementedException();
+            await _db.Authors.AddAsync(author);
+            await _db.SaveChangesAsync();
         }
 
         public Task DeleteAsync(int id)
