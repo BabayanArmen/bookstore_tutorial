@@ -131,7 +131,7 @@ namespace BookStore.Migrations
                     b.Property<DateTime?>("ModifyDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(128)
                         .HasColumnType("character varying(128)");

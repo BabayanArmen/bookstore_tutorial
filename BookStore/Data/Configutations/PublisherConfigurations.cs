@@ -10,7 +10,7 @@ namespace BookStore.Data.Configutations
         {
             builder.HasKey(p => p.Id);
 
-            builder.Property(p => p.Name)
+            builder.Property(p => p.Title)
                 .IsRequired()
                 .HasMaxLength(128);
 
