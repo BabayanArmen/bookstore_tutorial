@@ -6,15 +6,29 @@ namespace BookStore.Repositories.AuthorRepo
 {
     public class AuthorRepo(AppDbContext _db) : IAuthorRepo
     {
-        public async Task AddASync(Author author)
+        public async Task<Author> AddAsync(Author author)
         {
             await _db.Authors.AddAsync(author);
             await _db.SaveChangesAsync();
+            return author;
         }
 
-        public Task DeleteAsync(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var author = await _db.Authors
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (author is null)
+            {
+                return false;
+            }
+
+            author.IsDeleted = true;
+            author.ModifyDate = DateTime.UtcNow;
+
+            await _db.SaveChangesAsync();
+
+            return true;
         }
 
         public async Task<List<Author>> GetAllAsync()
@@ -29,9 +43,22 @@ namespace BookStore.Repositories.AuthorRepo
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task UpdateAsync(Author author)
+        public async Task<bool> UpdateAsync(Author author)
         {
-            throw new NotImplementedException();
+            var existingAuthor = await _db.Authors
+                .FirstOrDefaultAsync(x => x.Id == author.Id);
+
+            if (existingAuthor is null)
+            {
+                return false;
+            }
+
+            existingAuthor.Name = author.Name;
+            existingAuthor.ModifyDate = DateTime.UtcNow;
+
+            await _db.SaveChangesAsync();
+
+            return true;
         }
     }
 }

@@ -6,8 +6,8 @@ namespace BookStore.Repositories.AuthorRepo
     {
         Task<List<Author>> GetAllAsync();
         Task<Author?> GetByIdAsync(int id);
-        Task<Author> AddASync(Author author);
-        Task UpdateAsync (Author author);
-        Task DeleteAsync(int id);
+        Task<Author> AddAsync(Author author);
+        Task<bool> UpdateAsync(Author author);
+        Task<bool> DeleteAsync(int id);
     }
 }
