@@ -1,6 +1,8 @@
 ﻿using BookStore.Data;
 using BookStore.Entities;
+using BookStore.FIlters;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.WebRequestMethods;
 
 namespace BookStore.Repositories.AuthorRepo
 {
@@ -31,10 +33,35 @@ namespace BookStore.Repositories.AuthorRepo
             return true;
         }
 
-        public async Task<List<Author>> GetAllAsync()
+        public async Task<PageResult<Author>> GetAllAsync(AuthorFilter filter)
         {
-            return await _db.Authors
+            var query = _db.Authors
+                .Include(x => x.Books)
+                .Include(x => x.AuthorPublishers)
+                .AsQueryable();
+
+            var filteredQuery = filter.Apply(query);
+
+            var totalRecords = await filteredQuery.CountAsync();
+
+            var pageSize = Math.Clamp(filter.Take, 1, 100);
+
+            var pageNumber = Math.Max(filter.Skip, 1);
+            
+            var autors = await filteredQuery
+                .OrderBy(x => x.Id)
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
                 .ToListAsync();
+
+            return new PageResult<Author>
+            {
+                Items = autors,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalRecords = totalRecords,
+                TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize)
+            };
         }
 
         public async Task<Author?> GetByIdAsync(int id)
@@ -62,3 +89,27 @@ namespace BookStore.Repositories.AuthorRepo
         }
     }
 }
+
+
+
+//var query = filter.Apply(_db.Authors);
+
+//var totalRecords = await query.CountAsync();
+
+//var pageSize = Math.Clamp(filter.PageSize, 1, 100);
+//var pageNumber = Math.Max(filter.PageNumber, 1);
+
+//var authors = await query
+//    .OrderBy(x => x.Id)
+//    .Skip((pageNumber - 1) * pageSize)
+//    .Take(pageSize)
+//    .ToListAsync();
+
+//return new PagedResult<Author>
+//{
+//    Items = authors,
+//    TotalRecords = totalRecords,
+//    TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize),
+//    PageNumber = pageNumber,
+//    PageSize = pageSize
+//};

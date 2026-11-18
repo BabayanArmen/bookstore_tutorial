@@ -1,10 +1,11 @@
 ﻿using BookStore.Entities;
+using BookStore.FIlters;
 
 namespace BookStore.Repositories.AuthorRepo
 {
     public interface IAuthorRepo
     {
-        Task<List<Author>> GetAllAsync();
+        Task<PageResult<Author>> GetAllAsync(AuthorFilter filter);
         Task<Author?> GetByIdAsync(int id);
         Task<Author> AddAsync(Author author);
         Task<bool> UpdateAsync(Author author);
