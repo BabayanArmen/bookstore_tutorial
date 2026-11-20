@@ -1,5 +1,6 @@
 ﻿using BookStore.Entities;
 using BookStore.FIlters;
+using BookStore.Models;
 
 namespace BookStore.Repositories.AuthorRepo
 {
