@@ -2,7 +2,7 @@
 {
     public class PageResult<T>
     {
-        public T? value { get; set; }
+        public T? Data { get; set; }
 
         public int TotalRecords { get; set; }
         public int TotalPages { get; set; }

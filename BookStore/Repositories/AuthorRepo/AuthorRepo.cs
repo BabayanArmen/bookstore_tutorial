@@ -55,9 +55,9 @@ namespace BookStore.Repositories.AuthorRepo
                 .Take(pageSize)
                 .ToListAsync();
 
-            return new PageResult<Author>
+            return new PageResult<List<Author>>
             {
-                Items = autors,
+                Data = autors,
                 PageNumber = pageNumber,
                 PageSize = pageSize,
                 TotalRecords = totalRecords,
