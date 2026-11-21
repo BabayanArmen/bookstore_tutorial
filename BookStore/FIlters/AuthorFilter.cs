@@ -4,7 +4,7 @@ using static System.Net.WebRequestMethods;
 
 namespace BookStore.FIlters
 {
-    public class AuthorFilter : BaseFIlter<Author>
+    public class AuthorFilter : BaseFilter<Author>
     {
         public string? Name { get; set; }
 

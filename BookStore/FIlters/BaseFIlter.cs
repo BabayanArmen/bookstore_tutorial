@@ -2,7 +2,7 @@
 
 namespace BookStore.FIlters
 {
-    public class BaseFIlter<T> where T : BaseEntity
+    public class BaseFilter<T> where T : BaseEntity
     {
         public int? Id { get; set; }
         public DateTime? CreateDate { get; set; }
