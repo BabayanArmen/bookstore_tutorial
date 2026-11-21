@@ -10,7 +10,7 @@ namespace BookStore.Repositories.AuthorRepo
         Task<PageResult<Author>> GetAllAsync(AuthorFilter filter);
         Task<Author?> GetByIdAsync(int id);
         Task<Author> AddAsync(Author author);
-        Task<bool> UpdateAsync(Author author);
+        Task<bool> UpdateAsync(UpdateAuthorDto author);
         Task<bool> DeleteAsync(int id);
     }
 }

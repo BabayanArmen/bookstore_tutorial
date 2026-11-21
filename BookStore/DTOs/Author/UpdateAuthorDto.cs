@@ -1,6 +1,6 @@
 ﻿namespace BookStore.DTOs.Author
 {
-    public class UpdateAuthorDto
+    public class UpdateAuthorDto : BaseDto
     {
         public string Name { get; set; } = string.Empty;
         public List<int>? BookIds { get; set; }

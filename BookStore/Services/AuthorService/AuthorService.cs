@@ -1,6 +1,4 @@
-﻿using BookStore.Data;
-using BookStore.DTOs.Author;
-using BookStore.Entities;
+﻿using BookStore.DTOs.Author;
 using BookStore.FIlters;
 using BookStore.Mappers;
 using BookStore.Models;
@@ -11,21 +9,35 @@ namespace BookStore.Services.AuthorService
     public class AuthorService : IAuthorService
     {
 
-        private readonly AuthorRepo _repo;
-        AuthorService(AuthorRepo repo)
+        private readonly IAuthorRepo _repo;
+        public AuthorService(IAuthorRepo repo)
         {
             _repo = repo;
         }
 
-        //public Task<Result<AuthorDto>> Add(AuthorDto dto)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<Response<AuthorDto>> Add(CreateAuthorDto dto)
+        {
+            var author = await _repo.AddAsync(dto.CreateToEntity());
 
-        //public Task<Result<bool>> Delete(int id)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            if (author == null)
+            {
+                return Result.Fail<AuthorDto>("some error");
+            }
+
+            return Result.Success<AuthorDto>(author.ToDto());
+        }
+
+        public async Task<Response<bool>> Delete(int id)
+        {
+            bool result = await _repo.DeleteAsync(id);
+
+            if (!result)
+            {
+                return Result.Fail<bool>("Author not found");
+            }
+
+            return Result.Success<bool>(result);
+        }
 
         public async Task<Response<List<AuthorDto>>> GetAll(AuthorFilter filter)
         {
@@ -33,23 +45,38 @@ namespace BookStore.Services.AuthorService
 
             if (result == null)
             {
-                return Result.Fail<List<AuthorDto>>(string.Empty);
+                return Result.Fail<List<AuthorDto>>("Result not found");
             }
 
-            return Result.Success<List<AuthorDto>>(
+            return Result.Success<List<AuthorDto>>
+            (
                 result?.Data?.Select(x => x.ToDto()).ToList(),
                 result?.PageInfo
             );
         }
 
-        //public Task<Result<AuthorDto>> GetById(int id)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public async Task<Response<AuthorDto>> GetById(int id)
+        {
+            var author = await _repo.GetByIdAsync(id);
 
-        //public Task<Result<bool>> Update(UpdateAuthorDto dto)
-        //{
-        //    throw new NotImplementedException();
-        //}
+            if (author == null)
+            {
+                return Result.Fail<AuthorDto>("Author not found");
+            }
+
+            return Result.Success<AuthorDto>(author.ToDto());
+        }
+
+        public async Task<Response<bool>> Update(UpdateAuthorDto dto)
+        {
+            bool result = await _repo.UpdateAsync(dto);
+
+            if (!result)
+            {
+                return Result.Fail<bool>("Author not found");
+            }
+
+            return Result.Success<bool>(result);
+        }
     }
 }

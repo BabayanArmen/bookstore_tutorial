@@ -1,4 +1,5 @@
 ﻿using BookStore.Data;
+using BookStore.DTOs.Author;
 using BookStore.Entities;
 using BookStore.FIlters;
 using BookStore.Models;
@@ -74,7 +75,7 @@ namespace BookStore.Repositories.AuthorRepo
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task<bool> UpdateAsync(Author author)
+        public async Task<bool> UpdateAsync(UpdateAuthorDto author)
         {
             var existingAuthor = await _db.Authors
                 .FirstOrDefaultAsync(x => x.Id == author.Id);
@@ -93,27 +94,3 @@ namespace BookStore.Repositories.AuthorRepo
         }
     }
 }
-
-
-
-//var query = filter.Apply(_db.Authors);
-
-//var totalRecords = await query.CountAsync();
-
-//var pageSize = Math.Clamp(filter.PageSize, 1, 100);
-//var pageNumber = Math.Max(filter.PageNumber, 1);
-
-//var authors = await query
-//    .OrderBy(x => x.Id)
-//    .Skip((pageNumber - 1) * pageSize)
-//    .Take(pageSize)
-//    .ToListAsync();
-
-//return new PagedResult<Author>
-//{
-//    Items = authors,
-//    TotalRecords = totalRecords,
-//    TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize),
-//    PageNumber = pageNumber,
-//    PageSize = pageSize
-//};

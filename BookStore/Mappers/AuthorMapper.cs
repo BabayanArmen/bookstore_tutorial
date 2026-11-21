@@ -32,10 +32,5 @@ namespace BookStore.Mappers
                 Name = dto.Name
             };
         }
-
-        public static void UpdateToEntity(this Author author, UpdateAuthorDto dto)
-        {
-            author.Name = dto.Name;
-        }
     }
 }
