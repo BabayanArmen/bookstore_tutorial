@@ -1,4 +1,5 @@
 using BookStore.Data;
+using BookStore.ExceptionHandlers;
 using BookStore.Repositories.AuthorRepo;
 using BookStore.Services.AuthorService;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +16,15 @@ builder.Services.AddScoped<IAuthorRepo, AuthorRepo>();
 
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+
+app.UseExceptionHandler();
 
 app.UseHttpsRedirection();
 

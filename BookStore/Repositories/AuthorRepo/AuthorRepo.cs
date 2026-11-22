@@ -4,7 +4,6 @@ using BookStore.Entities;
 using BookStore.FIlters;
 using BookStore.Models;
 using Microsoft.EntityFrameworkCore;
-using static System.Net.WebRequestMethods;
 
 namespace BookStore.Repositories.AuthorRepo
 {
