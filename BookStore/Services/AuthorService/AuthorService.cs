@@ -26,7 +26,7 @@ namespace BookStore.Services.AuthorService
 
             if (author == null)
             {
-                return Result.Fail<AuthorDto>("some error");
+                return Result.Fail<AuthorDto>("Not created");
             }
 
             return Result.Success<AuthorDto>(author.ToDto());
