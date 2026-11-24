@@ -12,7 +12,7 @@ namespace BookStore.FIlters
         public int Skip { get; set; } = 0;
         public int Take { get; set; } = 10;
 
-        public virtual IQueryable<T> Apply(IQueryable<T> query)
+        public IQueryable<T> BaseFilterApply(IQueryable<T> query)
         {
             if (Id.HasValue)
             {
@@ -37,7 +37,6 @@ namespace BookStore.FIlters
             {
                 query = query.Where(x => !x.IsDeleted);
             }
-
 
             return query;
         }

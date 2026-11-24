@@ -41,30 +41,15 @@ namespace BookStore.Repositories.AuthorRepo
                 .Include(x => x.AuthorPublishers)
                 .AsQueryable();
 
-            var filteredQuery = filter.Apply(query);
+            var (filteredQuery, pageInfo) = filter.Apply(query);
 
-            var totalRecords = await filteredQuery.CountAsync();
-
-            var pageSize = Math.Clamp(filter.Take, 1, 100);
-
-            var pageNumber = Math.Max(filter.Skip, 1);
-            
             var autors = await filteredQuery
-                .OrderBy(x => x.Id)
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .ToListAsync();
 
             return new PageResult<Author>
             {
                 Data = autors,
-                PageInfo = new PageInfo
-                {
-                    PageNumber = pageNumber,
-                    PageSize = pageSize,
-                    TotalRecords = totalRecords,
-                    TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize)
-                }
+                PageInfo = pageInfo
             };
         }
 
@@ -90,6 +75,12 @@ namespace BookStore.Repositories.AuthorRepo
             await _db.SaveChangesAsync();
 
             return true;
+        }
+
+        public async Task<bool> IsNameExists(string name)
+        {
+            return await _db.Authors
+                .AnyAsync(x => x.Name == name);
         }
     }
 }

@@ -12,5 +12,6 @@ namespace BookStore.Repositories.AuthorRepo
         Task<Author> AddAsync(Author author);
         Task<bool> UpdateAsync(UpdateAuthorDto author);
         Task<bool> DeleteAsync(int id);
+        Task<bool> IsNameExists(string name);
     }
 }

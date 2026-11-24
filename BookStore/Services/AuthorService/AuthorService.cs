@@ -17,6 +17,11 @@ namespace BookStore.Services.AuthorService
 
         public async Task<Response<AuthorDto>> Add(CreateAuthorDto dto)
         {
+            if (await _repo.IsNameExists(dto.Name))
+            {
+                return Result.Fail<AuthorDto>("Name is already exists");
+            }
+
             var author = await _repo.AddAsync(dto.CreateToEntity());
 
             if (author == null)

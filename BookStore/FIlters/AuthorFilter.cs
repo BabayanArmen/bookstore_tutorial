@@ -1,6 +1,5 @@
 ﻿using BookStore.Entities;
-using BookStore.FIlters;
-using static System.Net.WebRequestMethods;
+using BookStore.Models;
 
 namespace BookStore.FIlters
 {
@@ -8,44 +7,35 @@ namespace BookStore.FIlters
     {
         public string? Name { get; set; }
 
-        public override IQueryable<Author> Apply(IQueryable<Author> query)
+        public (IQueryable<Author>, PageInfo) Apply(IQueryable<Author> query)
         {
-            query = base.Apply(query);
+            query = base.BaseFilterApply(query);
 
             if (!string.IsNullOrWhiteSpace(Name))
             {
                 query = query.Where(x => x.Name.ToLower().Contains(Name.ToLower()));
             }
 
-            return query
-                .OrderBy(x => x.Id)
-                .Skip((Skip - 1) * Take)
-                .Take(Take);
+            var totalRecords = query.Count();
+
+            var pageSize = Math.Clamp(Take, 1, 100);
+
+            var pageNumber = Math.Max(Skip, 1);
+
+            var filteredQuery = query
+                  .OrderBy(x => x.Id)
+                  .Skip((pageNumber - 1) * pageSize)
+                  .Take(pageSize);
+
+            var pageInfo = new PageInfo
+            {
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalRecords = totalRecords,
+                TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize)
+            };
+
+            return (filteredQuery, pageInfo);
         }
     }
 }
-
-
-
-
-//var query = filter.Apply(_db.Authors);
-
-//var totalRecords = await query.CountAsync();
-
-//var pageSize = Math.Clamp(filter.PageSize, 1, 100);
-//var pageNumber = Math.Max(filter.PageNumber, 1);
-
-//var authors = await query
-//    .OrderBy(x => x.Id)
-//    .Skip((pageNumber - 1) * pageSize)
-//    .Take(pageSize)
-//    .ToListAsync();
-
-//return new PagedResult<Author>
-//{
-//    Items = authors,
-//    TotalRecords = totalRecords,
-//    TotalPages = (int)Math.Ceiling(totalRecords / (double)pageSize),
-//    PageNumber = pageNumber,
-//    PageSize = pageSize
-//};
