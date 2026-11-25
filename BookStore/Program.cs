@@ -2,6 +2,8 @@ using BookStore.Data;
 using BookStore.MIddlewares;
 using BookStore.Repositories.AuthorRepo;
 using BookStore.Services.AuthorService;
+using BookStore.Validators.AuthorValidators;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
@@ -27,6 +29,8 @@ builder.Services.AddProblemDetails();
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddValidatorsFromAssemblyContaining<AuthorDtoValidator>();
 
 var app = builder.Build();
 
